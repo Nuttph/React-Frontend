@@ -1,38 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../style/Login.css";
 import axios from "axios";
+import useDetailShop from "../stores/detailshop";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("");
-  const [data, setData] = useState([]);
-  const fetchget = async () => {
-    try {
-      console.log("token again : ", token);
-      if (!token) {
-        console.log("No token available");
-        return;
-      }
-      const config = {
-        headers: {
-          authtoken: `${token}`,
-        },
-      };
-      const response = await axios.get(
-        "http://localhost:5000/api/product",
-        config
-      );
-      const raw = response.data; // Accessing data directly
-      console.log("hello:", raw);
-      setData(raw);
-    } catch (err) {
-      console.log(
-        "This get error ::: ",
-        err.response ? err.response.data : err.message
-      );
-    }
-  };
+  const { details, token, setToken } = useDetailShop();
+  const navigate = useNavigate();
 
   const postData = async () => {
     try {
@@ -52,7 +28,11 @@ const Login = () => {
     console.log("Submit!!");
     postData();
   }
-  useEffect(() => {}, [data]);
+  useEffect(() => {
+    if (token) {
+      navigate("/test");
+    }
+  }, [navigate, token]);
   return (
     <>
       <div>token : {token}</div>
@@ -89,20 +69,11 @@ const Login = () => {
             <button type="submit">Submit</button> {/* Added type="submit" */}
           </form>
         </div>
-        <div>
-          <button
-            onClick={() => {
-              fetchget();
-            }}
-          >
-            Click
-          </button>
-        </div>
       </div>
       <div>
-        {data && (
+        {details && (
           <>
-            {data.map((item, index) => (
+            {details.map((item, index) => (
               <div key={index}>
                 <div>{item.name}</div>
                 <div>{item.detail}</div>

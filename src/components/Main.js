@@ -3,11 +3,6 @@ import axios from "axios";
 const Main = () => {
   const getData = async () => {
     try {
-      //   const config = {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   };
       const res = await axios.get("http://localhost:5000/api/product");
       const items = res.json();
       console.log("this is item", items);
@@ -20,7 +15,7 @@ const Main = () => {
     getData();
   }, []);
 
-  return <div>Main</div>;
+  return <div></div>;
 };
 
 export default Main;
